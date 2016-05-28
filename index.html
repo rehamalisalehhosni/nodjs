@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <script type="text/javascript" src="./js/jquery-1.11.2.js"></script>
+     <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
+ 	<title> Training Center </title>
+</head>
+<body>
+<div class="container">  
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">WebSiteName</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="courses_list.html">courses </a></li>
+        <li><a href="scors_list.html">Scors </a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="page-header">
+     <h1> Students</h1>
+  </div>
+    <a href="add_student.html" class="btn btn-primary">Add Student</a>
+    <p class="clear-fix"></p>
+    <br/>
+  <div class="data">
+  </div>
+<script type="text/javascript">
+	$(function(){    
+		$.ajax({
+               url:"/students_list",
+               method:'get',
+              	data:{  },
+              	success:function(response){
+                var data = jQuery.parseJSON(response);
+                var x='';  
+                x+="<table class='table table-striped '>";  
+                x+="<tr  class='info'><th>Name </th><th>email </th><th>delete </th><th>edit </th></tr>"
+                for(var i=0 ;i<data.length;i++){
+	            	 x+="<tr>";  
+	                 x+="<td>";  
+               	     x+=data[i].st_name;
+	                 x+="</td>";  
+	                 x+="<td>";  
+               	     x+=data[i].st_email;
+	                 x+="</td>";  
+	                 x+="<td>";  
+               	     x+="<a href='/delete_student?id="+data[i].student_id+"'>delete</a>";
+	                 x+="</td>";  
+	                 x+="<td>";  
+               	     x+="<a href='/edit_student.html?id="+data[i].student_id+"'>Edit</a>";
+	                 x+="</td>";  
+	            	 x+="</tr>";  
+                }
+	            x+="</table>";  
+                $('.data').html(x);
+              },
+              complete:function(){
+              }, cache: false,
+              async:true
+          });
+     });
+</script>
+</div>
+</body>
+</html>

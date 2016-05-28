@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="./js/jquery-1.11.2.js"></script>
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
+        <title> Training Center </title>
+    </head>
+    <body>
+        <div class="container">  
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">WebSiteName</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><a href="courses_list.html">courses </a></li>
+                        <li><a href="scors_list.html">Scors </a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="page-header">
+                <h1>Add Score</h1>
+            </div>
+            <p class="clear-fix"></p>
+            <br/>
+            <form action="/addscore" method="post" id="form">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">score</span>
+                    <input type="text"name="result"  class="form-control" placeholder="result" >
+                </div><br/>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">Student </span>
+                    <select name="student" id="student"   class="form-control"></select>
+                </div><br/>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">course </span>
+                    <select name="course" id="course"   class="form-control">
+                    </select>
+                </div><br/>
+                <div class="input-group">
+                    <input type="submit" name="button" value="submit" class="btn btn-primary" onclick="send()" />
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript">
+    $(function(){    
+    $.ajax({
+               url:"/courses_list",
+               method:'get',
+                data:{  },
+                success:function(response){
+                var data = jQuery.parseJSON(response);
+                var x="";
+                for(var i=0 ;i<data.length;i++){
+                   x +="<option value='"+data[i].course_id+"'>"+data[i].title+"</option>";
+                }
+                $('#course').html(x);
+              },
+              complete:function(){
+              }, cache: false,
+              async:true
+          }); 
+           $.ajax({
+               url:"/students_list",
+               method:'get',
+                data:{  },
+                success:function(response){
+                var data = jQuery.parseJSON(response);
+                var x="";
+                for(var i=0 ;i<data.length;i++){
+                   x +="<option value='"+data[i].student_id+"'>"+data[i].st_name+"</option>";
+                }
+                $('#student').html(x);
+              },
+              complete:function(){
+              }, cache: false,
+              async:true
+          });
+     });
+</script>
+
+    </body>
+</html>

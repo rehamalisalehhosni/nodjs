@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="./js/jquery-1.11.2.js"></script>
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
+        <title> Training Center </title>
+    </head>
+    <body>
+        <div class="container">  
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">WebSiteName</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li ><a href="/">Home</a></li>
+                        <li><a href="courses_list.html">courses </a></li>
+                        <li class="active"><a href="scors_list.html">Scors </a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="page-header">
+                <h1>Edit Score</h1>
+            </div>
+            <p class="clear-fix"></p>
+            <br/>
+            <form action="/editscore" method="post" id="form">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">score</span>
+                    <input type="text"name="result" id="result" class="form-control" placeholder="result" >
+                </div><br/>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">Student </span>
+                    <select name="student" id="student"   class="form-control"></select>
+                </div><br/>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">course </span>
+                    <select name="course" id="course"   class="form-control">
+                    </select>
+                </div><br/>
+                <div class="input-group">
+                    <input type='hidden' name='result_id' id='result_id'/>
+                    <input type="submit" name="button" value="submit" class="btn btn-primary" onclick="send()" />
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                var string = document.URL;
+                d = string.split('id=');
+                            $.ajax({
+                url: "/courses_list",
+                method: 'get',
+                data: {},
+                success: function (response) {
+                    var data = jQuery.parseJSON(response);
+                    var x = "";
+                    for (var i = 0; i < data.length; i++) {
+                        x += "<option value='" + data[i].course_id + "'>" + data[i].title + "</option>";
+                    }
+                    $('#course').html(x);
+                },
+                complete: function () {
+                }, cache: false,
+                async: true
+            });
+            $.ajax({
+            url:"/students_list",
+                    method:'get',
+                    data:{  },
+                    success:function (response) {
+                        var data = jQuery.parseJSON(response);
+                        var x = "";
+                        for (var i = 0; i < data.length; i++) {
+                            x += "<option value='" + data[i].student_id + "'>" + data[i].st_name + "</option>";
+                        }
+                        $('#student').html(x);
+                    },
+                    complete:function () {
+                    }, cache: false,
+                    async:true
+            });
+                $.ajax({
+                    url: "/edit_score?id=" + d[1],
+                    method: 'GET',
+                    data: {},
+                    success: function (response) {
+                        //var data = response;
+                        var data = jQuery.parseJSON(response);
+                        $('#result').val(data[0].result);
+                        $('#result_id').val(data[0].result_id);
+                        $( "#student option[value="+data[0].student_id+"]").attr('selected','selected');
+                        $( "#course option[value="+data[0].course_id+"]").attr('selected','selected');
+/*                        $('#instructor_name').val(data[0].instructor_name);
+                        $('#course_id').val(data[0].course_id);
+*/                    },
+                    complete: function () {
+                    }, cache: false,
+                    async: true
+                });
+            });
+        </script>
+
+    </body>
+</html>
